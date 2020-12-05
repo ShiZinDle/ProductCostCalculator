@@ -6,6 +6,10 @@ from product_cost_calculator import app
 from product_cost_calculator.forms import LoginForm, RegisterForm
 
 
+@app.route('/')
+def home():
+    return render_template('base.j2')
+
 @app.route('/register', methods=['GET', 'POST'])
 def register() -> str:
     form = RegisterForm()
@@ -34,6 +38,7 @@ def login() -> str:
 @app.route('/logout')
 def logout():
     logout_user()
+    return redirect(url_for('home'))
 
 
 @app.route('/product/<int:product_id>')
