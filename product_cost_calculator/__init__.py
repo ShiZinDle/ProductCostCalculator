@@ -13,7 +13,7 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = SECRET_KEY
 login_manager = LoginManager(app)
 
-engine = create_engine(f'sqlite:///{DB_PATH}', echo=True)
+engine = create_engine(f'sqlite:///{DB_PATH}', echo=True, connect_args={'check_same_thread': False})
 Base = declarative_base()
 session = sessionmaker(bind=engine)
 

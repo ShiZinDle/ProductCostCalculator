@@ -1,0 +1,86 @@
+{% extends 'base.j2' %}
+{% block content %}
+  <div class="card ml-5 mt-2 float-left" style="width: 18rem;">
+    <div class="card-header">
+        <span class="h2 font-weight-bold">{{product['name'] | title}}</span> <span class='h3'>{{ product['amount'] }}{{ product['unit'] }}</span>
+    </div>
+    <div class="card-body">
+      <span class="h3">Cost: {{ product['cost'] }}</span>
+    </div>
+  </div>
+  <div class="container col-6 mt-2">
+    <table class="table table-borderless">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">{{ form.ingredient.label(class='font-weight-bold')}}</li>
+            <th scope="col">{{ form.amount.label(class='font-weight-bold')}}</li>
+            <th scope="col">{{ form.unit.label(class='font-weight-bold')}}</li>
+          </tr>
+        </thead>
+      {% for recipe in recipes %}
+        <tr>
+          <td>{{ recipe['ingredient'] | title }}</li>
+          <td>{{ recipe['amount'] }}</li>
+          <td>{{ recipe['unit'] }}</li>
+          <td>
+            <a href="{{ url_for('delete_recipe', ingredient_id=recipe['ingredient_id'], product_id=product['product_id']) }}">
+              <button class="btn btn-danger">X</button>
+            </a>
+          </td>
+        </tr>
+      {% endfor %}
+      <tr>
+        <form method="POST" action="" class="row text-center">
+          {{ form.hidden_tag() }}
+          <td>
+            <div class="form-group">
+              {% if form.ingredient.errors %}
+                {{ form.ingredient(class='form-control is-invalid') }}
+                <div class="invalid-feedback">
+                  {% for error in form.ingredient.errors %}
+                    {{ error }}
+                  {% endfor %}
+                </div>
+              {% else %}
+                {{ form.ingredient(class='form-control') }}
+              {% endif %}
+            </div>
+          </td>
+          <td>
+            <div class="form-group">
+              {% if form.amount.errors %}
+                {{ form.amount(class='form-control is-invalid') }}
+                <div class="invalid-feedback">
+                  {% for error in form.amount.errors %}
+                    {{ error }}
+                  {% endfor %}
+                </div>
+              {% else %}
+                {{ form.amount(class='form-control') }}
+              {% endif %}
+            </div>
+          </td>
+          <td>
+            <div class="form-group">
+              {% if form.unit.errors %}
+                {{ form.unit(class='form-control is-invalid') }}
+                <div class="invalid-feedback">
+                  {% for error in form.unit.errors %}
+                    {{ error }}
+                  {% endfor %}
+                </div>
+              {% else %}
+                {{ form.unit(class='form-control') }}
+              {% endif %}
+            </div>
+          </td>
+          <td>
+            <div class="form-group">
+              {{ form.submit(class='btn btn-outline-primary')}}
+            </div>
+          </td>
+        </form>
+      </tr>
+    </table>
+  </div>
+{% endblock %}

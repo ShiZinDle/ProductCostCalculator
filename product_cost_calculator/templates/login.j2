@@ -1,14 +1,14 @@
 {% extends 'base.j2' %}
 {% block content %}
-<div class='container col-6'>
-  <legend class='h2'>Login</legend>
-    <form method='POST' action=''>
+  <div class="container col-3 mt-2">
+    <legend class="h2">Login</legend>
+    <form method="POST" action="">
       {{ form.hidden_tag() }}
       <div class="form-group">
         {{ form.email.label(class='font-weight-bold')}}
         {% if form.email.errors %}
           {{ form.email(class='form-control is-invalid') }}
-          <div class='invalid-feedback'>
+          <div class="invalid-feedback">
             {% for error in form.email.errors %}
               {{ error }}
             {% endfor %}
@@ -21,7 +21,7 @@
         {{ form.password.label(class='font-weight-bold')}}
         {% if form.password.errors %}
           {{ form.password(class='form-control is-invalid') }}
-          <div class='invalid-feedback'>
+          <div class="invalid-feedback">
             {% for error in form.password.errors %}
               {{ error }}
             {% endfor %}
@@ -30,10 +30,12 @@
           {{ form.password(class='form-control') }}
         {% endif %}
       </div>
+      {{ form.remember }}
+      {{ form.remember.label }}
       <div class="form-group">
         {{ form.submit(class='btn btn-outline-primary')}}
       </div>
     </form>
-    <p>Don't have a user? <a href={{ url_for('register') }}>Sign up</a>.</p>
-</div>
+    <p>Don"t have a user? <a href="{{ url_for('register') }}">Sign up</a>.</p>
+  </div>
 {% endblock %}
