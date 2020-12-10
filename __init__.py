@@ -15,3 +15,6 @@ Base = declarative_base()
 session = sessionmaker(bind=engine)
 
 import recipe_hub.views
+
+if __name__ == '__main__':
+    app.run(threaded=True, port=5000)
