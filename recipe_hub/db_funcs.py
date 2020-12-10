@@ -94,7 +94,7 @@ def get_all_products(user_id: int, public_only: bool = False) -> List[Dict[str, 
 
 def get_all_public_products() -> List[Dict[str, Union[int, str]]]:
     s = session()
-    products = s.query(Product.product_id).filter(Product.public==1).all()
+    products = s.query(Product.product_id).filter(Product.public==True).all()
     all_products = [get_product(product) for product in products]
     shuffle(all_products)
     return all_products
