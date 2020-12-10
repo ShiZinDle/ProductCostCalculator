@@ -1,11 +1,13 @@
 {% extends 'base.j2' %}
 {% block content %}
-  <div class="container col-3 mt-2">
-    <legend class="h2">Register</legend>
+  <div class="container col-4 mt-3">
+    <legend class="h2 text-center">Register</legend>
     <form method="POST">
       {{ form.hidden_tag() }}
-      <div class="form-group">
-        {{ form.username.label(class='font-weight-bold')}}
+      <div class="input-group mb-2">
+        <div class="input-group-prepend">
+          {{ form.username.label(class='font-weight-bold input-group-text')}}
+        </div>
         {% if form.username.errors %}
           {{ form.username(class='form-control is-invalid') }}
           <div class="invalid-feedback">
@@ -17,8 +19,10 @@
           {{ form.username(class='form-control') }}
         {% endif %}
       </div>
-      <div class="form-group">
-        {{ form.email.label(class='font-weight-bold') }}
+      <div class="input-group mb-2">
+        <div class="input-group-prepend">
+          {{ form.email.label(class='font-weight-bold input-group-text') }}
+        </div>
         {% if form.email.errors %}
           {{ form.email(class='form-control is-invalid') }}
           <div class="invalid-feedback">
@@ -30,8 +34,10 @@
           {{ form.email(class='form-control') }}
         {% endif %}
       </div>
-      <div class="form-group">
-        {{ form.password.label(class='font-weight-bold')}}
+      <div class="input-group mb-2">
+        <div class="input-group-prepend">
+          {{ form.password.label(class='font-weight-bold input-group-text') }}
+        </div>
         {% if form.password.errors %}
           {{ form.password(class='form-control is-invalid') }}
           <div class="invalid-feedback">
@@ -43,8 +49,10 @@
           {{ form.password(class='form-control') }}
         {% endif %}
       </div>
-      <div class="form-group">
-        {{ form.confirm_password.label(class='font-weight-bold')}}
+      <div class="input-group mb-2">
+        <div class="input-group-prepend">
+          {{ form.confirm_password.label(class='font-weight-bold input-group-text') }}
+        </div>
         {% if form.confirm_password.errors %}
           {{ form.confirm_password(class='form-control is-invalid') }}
           <div class="invalid-feedback">
@@ -56,8 +64,10 @@
           {{ form.confirm_password(class='form-control') }}
         {% endif %}
       </div>
-      <div class="form-group">
-        {{ form.fullname.label(class='font-weight-bold')}}
+      <div class="input-group mb-2">
+        <div class="input-group-prepend">
+          {{ form.fullname.label(class='font-weight-bold input-group-text') }}
+        </div>
         {% if form.fullname.errors %}
           {{ form.fullname(class='form-control is-invalid') }}
           <div class="invalid-feedback">
@@ -69,8 +79,10 @@
           {{ form.fullname(class='form-control') }}
         {% endif %}
       </div>
-      <div class="form-group">
-        {{ form.birthday.label(class='font-weight-bold')}}
+      <div class="input-group mb-2">
+        <div class="input-group-prepend">
+          {{ form.birthday.label(class='font-weight-bold input-group-text') }}
+        </div>
         {% if form.birthday.errors %}
           {{ form.birthday(class='form-control is-invalid') }}
           <div class="invalid-feedback">
@@ -82,8 +94,8 @@
           {{ form.birthday(class='form-control') }}
         {% endif %}
       </div>
-      <div class="form-group">
-        {{ form.submit(class='btn btn-outline-primary')}}
+      <div class="input-group mb-2">
+        {{ form.submit(class='btn btn-outline-primary') }}
       </div>
     </form>
     <p class="text-muted">Already have a user? <a href="{{ url_for('login') }}">Sign in</a>.</p>

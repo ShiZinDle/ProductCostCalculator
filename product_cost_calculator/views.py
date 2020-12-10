@@ -1,19 +1,19 @@
 from flask import flash, redirect, render_template, url_for
 from flask_login import current_user, login_user, logout_user
 from flask_login.utils import login_required
-# from sqlalchemy.sql.functions import current_user
 
 import product_cost_calculator.db_funcs as db_funcs
 from product_cost_calculator import app
-from product_cost_calculator.forms import LoginForm, ProductForm, RecipeForm, RegisterForm
+from product_cost_calculator.forms import BirthdayForm, EmailForm, LoginForm, NameForm, PasswordForm, ProductForm, RecipeForm, RegisterForm, UsernameForm
 
 
 @app.route('/')
 def home():
-    return render_template('base.j2')
+    products = db_funcs.get_all_public_products()
+    return render_template('home.j2', products=products)
 
 
-@app.route('/register', methods=['GET', 'POST'])
+@app.route('/register/', methods=['GET', 'POST'])
 def register() -> str:
     form = RegisterForm()
     if form.validate_on_submit():
@@ -25,27 +25,27 @@ def register() -> str:
     return render_template('register.j2', form=form)
 
 
-@app.route('/login', methods=['GET', 'POST'])
+@app.route('/login/', methods=['GET', 'POST'])
 def login() -> str:
     form = LoginForm()
     if form.validate_on_submit():
         email = form.email.data
         if db_funcs.validate_password(email, form.password.data):
-            login_user(db_funcs.get_user(email), remember=form.remember.data)
+            login_user(db_funcs.get_user_by_email(email), remember=form.remember.data)
             flash('You have been logged in.', 'success')
             return redirect(url_for('home'))
         flash('Login failed. Please try again.', 'danger')
     return render_template('login.j2', form=form)
 
 
-@app.route('/logout')
+@app.route('/logout/')
 @login_required
 def logout():
     logout_user()
     return redirect(url_for('home'))
 
 
-@app.route('/product/add', methods=['GET', 'POST'])
+@app.route('/product/add/', methods=['GET', 'POST'])
 @login_required
 def add_product() -> str:
     form = ProductForm()
@@ -58,29 +58,121 @@ def add_product() -> str:
     return render_template('new_product.j2', form=form)
 
 
-@app.route('/product/<int:product_id>', methods=['GET', 'POST'])
+@app.route('/product/<int:product_id>/', methods=['GET', 'POST'])
 def view_product(product_id: int) -> str:
     product = db_funcs.get_product(product_id)
-    form = RecipeForm()
+    form = RecipeForm(product_id=product_id)
     if form.validate_on_submit():
         db_funcs.add_recipe(product_id=product_id,
                             ingredient=form.ingredient.data,
                             amount=form.amount.data,
-                            unit=form.unit.data)
+                            unit_id=form.unit.data)
     recipe = db_funcs.get_recipe(product_id)
-    return render_template('view_product.j2', product=product, recipes=recipe, form=form)
+    try:
+        if product['public'] or product['user_id'] == current_user.user_id:
+            return render_template('view_product.j2', product=product, recipes=recipe, form=form)
+        return redirect(url_for('home'))
+    except AttributeError:
+        return redirect(url_for('home'))
 
 
-@app.route('/profile')
+@app.route('/products/')
 @login_required
-def profile() -> str:
+def products() -> str:
     products = db_funcs.get_all_products()
     username = current_user.username
-    return render_template('profile.j2', username=username, products=products)
+    return render_template('products.j2', username=username, products=products)
 
 
-@app.route('/product/<int:product_id>/delete/<int:ingredient_id>')
+@app.route('/products/<int:product_id>/delete/<int:ingredient_id>/')
 @login_required
 def delete_recipe(product_id: int, ingredient_id: int) -> str:
     db_funcs.delete_recipe(product_id, ingredient_id)
     return redirect(url_for('view_product', product_id=product_id))
+
+
+@app.route('/products/<int:product_id>/delete/all/')
+@login_required
+def delete_product(product_id: int) -> str:
+    db_funcs.delete_product(product_id)
+    return redirect(url_for('products'))
+
+
+@app.route('/supplies/')
+@login_required
+def supplies() -> str:
+    return redirect(url_for('home'))
+
+
+@app.route('/profile/<int:user_id>')
+def profile(user_id: int) -> str:
+    user = db_funcs.get_user(user_id)
+    if user is None:
+        return redirect(url_for('home'))
+    return render_template('profile.j2', user=user)
+
+
+@app.route('/profile/username/', methods=['GET', 'POST'])
+@login_required
+def edit_username() -> str:
+    form = UsernameForm()
+    if form.validate_on_submit():
+        if db_funcs.validate_password(current_user.email, form.password.data):
+            db_funcs.change_username(current_user.user_id, form.username.data)
+            flash(f'Username changed to {form.username.data}.', 'success')
+            return redirect(url_for('profile'))
+        flash('Wrong password. Please try again.', 'danger')
+    return render_template('edit_username.j2', form=form)
+
+
+@app.route('/profile/email/', methods=['GET', 'POST'])
+@login_required
+def edit_email() -> str:
+    form = EmailForm()
+    if form.validate_on_submit():
+        if db_funcs.validate_password(current_user.email, form.password.data):
+            db_funcs.change_email(current_user.user_id, form.email.data)
+            flash(f'Email changed to {form.email.data}.', 'success')
+            return redirect(url_for('profile'))
+        flash('Wrong password. Please try again.', 'danger')
+    return render_template('edit_email.j2', form=form)
+
+
+@app.route('/profile/password/', methods=['GET', 'POST'])
+@login_required
+def edit_password() -> str:
+    form = PasswordForm()
+    if form.validate_on_submit():
+        if db_funcs.validate_password(current_user.email, form.cur_password.data):
+            db_funcs.change_password(current_user.user_id, form.new_password.data)
+            flash(f'Password changed.', 'success')
+            return redirect(url_for('profile'))
+        flash('Wrong password. Please try again.', 'danger')
+    return render_template('edit_password.j2', form=form)
+
+
+@app.route('/profile/name/', methods=['GET', 'POST'])
+@login_required
+def edit_name() -> str:
+    form = NameForm()
+    if form.validate_on_submit():
+        if db_funcs.validate_password(current_user.email, form.password.data):
+            db_funcs.change_fullname(current_user.user_id, form.fullname.data)
+            flash(f'Name changed to {form.fullname.data}.', 'success')
+            return redirect(url_for('profile'))
+        flash('Wrong password. Please try again.', 'danger')
+    return render_template('edit_name.j2', form=form)
+
+
+@app.route('/profile/birthday/', methods=['GET', 'POST'])
+@login_required
+def edit_birthday() -> str:
+    form = BirthdayForm()
+    if form.validate_on_submit():
+        if db_funcs.validate_password(current_user.email, form.password.data):
+            db_funcs.change_birthday(current_user.user_id, form.birthday.data)
+            birthday = form.birthday.data.strftime('%d/%m/%Y')
+            flash(f'Date of birth changed to {birthday}.', 'success')
+            return redirect(url_for('profile'))
+        flash('Wrong password. Please try again.', 'danger')
+    return render_template('edit_birthday.j2', form=form)

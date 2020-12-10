@@ -1,25 +1,25 @@
 {% extends 'base.j2' %}
 {% block content %}
-  <div class="container col-4 mt-3">
-    <legend class="h2 text-center">Login</legend>
+  <div class="container col-4 mt-3 text-center">
+    <legend class="h2">Edit Username</legend>
     <form method="POST" action="">
       {{ form.hidden_tag() }}
-      <div class="input-group mb-2">
+      <div class="input-group input-group mb-2">
         <div class="input-group-prepend">
-          {{ form.email.label(class='font-weight-bold input-group-text')}}
+          {{ form.username.label(class='font-weight-bold input-group-text')}}
         </div>
-        {% if form.email.errors %}
-          {{ form.email(class='form-control is-invalid') }}
+        {% if form.username.errors %}
+          {{ form.username(class='form-control is-invalid') }}
           <div class="invalid-feedback">
-            {% for error in form.email.errors %}
+            {% for error in form.username.errors %}
               {{ error }}
             {% endfor %}
           </div>
         {% else %}
-          {{ form.email(class='form-control') }}
+          {{ form.username(class='form-control') }}
         {% endif %}
       </div>
-      <div class="input-group mb-2">
+      <div class="input-group input-group mb-2">
         <div class="input-group-prepend">
           {{ form.password.label(class='font-weight-bold input-group-text')}}
         </div>
@@ -34,12 +34,9 @@
           {{ form.password(class='form-control') }}
         {% endif %}
       </div>
-      {{ form.remember }}
-      {{ form.remember.label }}
       <div class="mb-2">
-        {{ form.submit(class='btn btn-outline-primary')}}
+        {{ form.submit(class='btn btn-lg btn-outline-primary')}}
       </div>
     </form>
-    <p class="text-muted">Don't have a user? <a href="{{ url_for('register') }}">Sign up</a>.</p>
   </div>
 {% endblock %}

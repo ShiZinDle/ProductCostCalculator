@@ -1,2 +1,18 @@
 html {
   font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+body {
+  position: relative;
+  min-height: 100vh;
+  padding-bottom: 70px;
+  overflow-x: hidden;
+  width: 100vw;
+}
+
+footer {
+  position: absolute;
+  bottom: 0;
+  height: 70px;
+  width: 100vw;
+}

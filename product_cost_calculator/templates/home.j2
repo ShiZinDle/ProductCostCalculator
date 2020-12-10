@@ -1,0 +1,26 @@
+{% extends 'base.j2' %}
+{% block content %}
+  <div class="container col-8 mt-3">
+    <div class="row justify-content-center">
+      <h2 class="font-weight-bold">Public Products</h2>
+    </div>
+      <div class="row">
+        {% for product in products %}
+          <div class="col-3 p-1 text-center">
+            <a href="{{ url_for('view_product', product_id=product['product_id']) }}" class="text-decoration-none">
+              <div class="card btn-outline-primary">
+                <div class="card-header bg-dark text-white">
+                  <span class="font-weight-bold h4">{{product['username'] }}'s</span><br>
+                  <span class="font-weight-bold h5">{{ product['name'] | title}}</span>
+                </div>
+                <div class="card-body text-body">
+                  <p>{{ product['amount'] }}{{ product['unit'] }}</p>
+                  <p>{{ product['cost'] }}</p>
+                </div>
+              </div>
+            </a>
+          </div>
+        {% endfor %}
+      </div>
+  </div>
+{% endblock %}

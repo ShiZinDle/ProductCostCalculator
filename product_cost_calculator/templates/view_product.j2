@@ -1,14 +1,29 @@
 {% extends 'base.j2' %}
 {% block content %}
-  <div class="card ml-5 mt-2 float-left" style="width: 18rem;">
-    <div class="card-header">
-        <span class="h2 font-weight-bold">{{product['name'] | title}}</span> <span class='h3'>{{ product['amount'] }}{{ product['unit'] }}</span>
+  <div class="float-right text-center mr-2 mt-2">
+    <a href="{{ url_for('profile', user_id=product['user_id']) }}" class="text-decoration-none">
+      <div class="card btn-outline-primary w-100">
+        <div class="card-header bg-dark text-white">
+            <span class="h2 font-weight-bold">
+              {{product['username'] }}'s
+            </span><br><span class="h3 font-weight-bold">
+              {{product['name'] | title}}
+            </span><span class='h3'>
+              {{ product['amount'] }}{{ product['unit'] }}
+            </span>
+        </div>
+        <div class="card-body text-body">
+          <span class="h3">Cost: {{ product['cost'] }}</span>
+        </div>
+    </a>
     </div>
-    <div class="card-body">
-      <span class="h3">Cost: {{ product['cost'] }}</span>
-    </div>
+    {% if current_user.user_id == product['user_id'] %}
+    <a href="{{ url_for('delete_product', product_id=product['product_id']) }}">
+      <button class="btn btn-outline-danger w-100">Delete Product</button>
+    </a>
+    {% endif %}
   </div>
-  <div class="container col-6 mt-2">
+  <div class="container col-6 mt-2 text-center">
     <table class="table table-borderless">
         <thead class="thead-dark">
           <tr>
@@ -22,18 +37,20 @@
           <td>{{ recipe['ingredient'] | title }}</li>
           <td>{{ recipe['amount'] }}</li>
           <td>{{ recipe['unit'] }}</li>
-          <td>
-            <a href="{{ url_for('delete_recipe', ingredient_id=recipe['ingredient_id'], product_id=product['product_id']) }}">
-              <button class="btn btn-danger">X</button>
-            </a>
-          </td>
+          {% if current_user.user_id == product['user_id'] %}
+            <td>
+              <a href="{{ url_for('delete_recipe', ingredient_id=recipe['ingredient_id'], product_id=product['product_id']) }}">
+                <button class="btn btn-outline-danger">X</button>
+              </a>
+            </td>
+          {% endif %}
         </tr>
       {% endfor %}
       <tr>
-        <form method="POST" action="" class="row text-center">
-          {{ form.hidden_tag() }}
-          <td>
-            <div class="form-group">
+        {% if current_user.user_id == product['user_id'] %}
+          <form method="POST" action="" class="row text-center">
+            {{ form.hidden_tag() }}
+            <td>
               {% if form.ingredient.errors %}
                 {{ form.ingredient(class='form-control is-invalid') }}
                 <div class="invalid-feedback">
@@ -44,10 +61,8 @@
               {% else %}
                 {{ form.ingredient(class='form-control') }}
               {% endif %}
-            </div>
-          </td>
-          <td>
-            <div class="form-group">
+            </td>
+            <td>
               {% if form.amount.errors %}
                 {{ form.amount(class='form-control is-invalid') }}
                 <div class="invalid-feedback">
@@ -58,10 +73,8 @@
               {% else %}
                 {{ form.amount(class='form-control') }}
               {% endif %}
-            </div>
-          </td>
-          <td>
-            <div class="form-group">
+            </td>
+            <td>
               {% if form.unit.errors %}
                 {{ form.unit(class='form-control is-invalid') }}
                 <div class="invalid-feedback">
@@ -72,14 +85,12 @@
               {% else %}
                 {{ form.unit(class='form-control') }}
               {% endif %}
-            </div>
-          </td>
-          <td>
-            <div class="form-group">
+            </td>
+            <td>
               {{ form.submit(class='btn btn-outline-primary')}}
-            </div>
-          </td>
-        </form>
+            </td>
+          </form>
+        {% endif %}
       </tr>
     </table>
   </div>

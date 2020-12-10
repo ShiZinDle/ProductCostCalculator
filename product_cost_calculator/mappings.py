@@ -40,7 +40,7 @@ class Ingredient(Base):
     __tablename__ = 'ingredients'
     
     ingredient_id = Column(Integer, primary_key=True)
-    name = Column(String, nullable=False, unique=True)
+    name = Column(String, nullable=False)
     unit_id = Column(Integer, ForeignKey('units.unit_id'), nullable=False)
 
 
