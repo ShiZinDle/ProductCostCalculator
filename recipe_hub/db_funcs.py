@@ -9,6 +9,8 @@ from sqlalchemy import and_, or_
 from recipe_hub import login_manager, session
 from recipe_hub.mappings import Ingredient, Product, Recipe, Unit, User
 
+UNITS = [('grams', 'g'), ('milliliter', 'ml'), ('whole')]
+
 
 # Ingredient
 def add_ingredient(name: str, unit_id: int) -> int:
@@ -166,6 +168,15 @@ def get_all_units() -> List[str]:
     return all_units
 
 
+def reset_units() -> None:
+    s = session()
+    units = s.query(Unit).all()
+    if not units:
+        for unit in UNITS:
+            s.add(Unit(*unit))
+        s.commit()
+
+
 # User
 def add_user(username: str, email: str, password: str,
              fullname: str, birthday: Optional[date]) -> int:
@@ -235,3 +246,6 @@ def change_birthday(user_id: int, birthday: str) -> None:
     user = s.query(User).filter(User.user_id==user_id).first()
     user.date_of_birth = birthday
     s.commit()
+
+
+reset_units()

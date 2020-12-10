@@ -34,7 +34,6 @@ class RegisterForm(FlaskForm):
             raise ValidationError('An account already exists for the chosen email. Please chooses a different email or login.')
 
 
-
 class LoginForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
     password = PasswordField('Password', validators=[DataRequired(), Length(min=8)])
@@ -49,9 +48,9 @@ class LoginForm(FlaskForm):
 
 
 class ProductForm(FlaskForm):
-    name = StringField('Product Name', validators=[DataRequired()])
+    name = StringField('Recipe Name', validators=[DataRequired()])
     amount = IntegerField('Final Amount', validators=[DataRequired()])
-    unit = SelectField('Unit', choices=get_all_units(), coerce=get_unit_id, validators=[DataRequired()])
+    unit = SelectField('Final Unit', choices=get_all_units(), coerce=get_unit_id, validators=[DataRequired()])
     public = BooleanField('Publish Publically')
     submit = SubmitField('Add')
     
