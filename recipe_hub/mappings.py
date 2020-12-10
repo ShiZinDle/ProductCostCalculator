@@ -2,7 +2,7 @@ from flask_login import UserMixin
 from sqlalchemy import (Binary, Boolean, Column, DateTime, Float, ForeignKey,
                         Integer, String)
 
-from product_cost_calculator import Base, engine
+from recipe_hub import Base, engine
 
 class User(Base, UserMixin):
     __tablename__ = 'users'

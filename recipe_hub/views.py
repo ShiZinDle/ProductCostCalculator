@@ -4,9 +4,9 @@ from flask_login import current_user, login_user, logout_user
 from flask_login.utils import login_required
 from werkzeug.wrappers import Response
 
-import product_cost_calculator.db_funcs as db_funcs
-from product_cost_calculator import app
-from product_cost_calculator.forms import BirthdayForm, EmailForm, LoginForm, NameForm, PasswordForm, ProductForm, RecipeForm, RegisterForm, UsernameForm
+import recipe_hub.db_funcs as db_funcs
+from recipe_hub import app
+from recipe_hub.forms import BirthdayForm, EmailForm, LoginForm, NameForm, PasswordForm, ProductForm, RecipeForm, RegisterForm, UsernameForm
 
 
 @app.route('/')

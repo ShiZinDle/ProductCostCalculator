@@ -6,10 +6,10 @@ from wtforms.fields.html5 import DateField, IntegerField
 from wtforms.fields.simple import HiddenField
 from wtforms.validators import DataRequired, Email, EqualTo, Length, Optional, ValidationError
 
-from product_cost_calculator import session
-from product_cost_calculator import db_funcs
-from product_cost_calculator.db_funcs import get_all_units, get_unit_id
-from product_cost_calculator.mappings import Ingredient, Product, Recipe, User
+from recipe_hub import session
+from recipe_hub import db_funcs
+from recipe_hub.db_funcs import get_all_units, get_unit_id
+from recipe_hub.mappings import Ingredient, Product, Recipe, User
 
 
 class RegisterForm(FlaskForm):

@@ -17,4 +17,4 @@ engine = create_engine(f'sqlite:///{DB_PATH}', echo=True, connect_args={'check_s
 Base = declarative_base()
 session = sessionmaker(bind=engine)
 
-import product_cost_calculator.views
+import recipe_hub.views

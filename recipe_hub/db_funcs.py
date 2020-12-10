@@ -6,8 +6,8 @@ import bcrypt
 from flask_login import current_user
 from sqlalchemy import and_, or_
 
-from product_cost_calculator import login_manager, session
-from product_cost_calculator.mappings import Ingredient, Product, Recipe, Unit, User
+from recipe_hub import login_manager, session
+from recipe_hub.mappings import Ingredient, Product, Recipe, Unit, User
 
 
 # Ingredient

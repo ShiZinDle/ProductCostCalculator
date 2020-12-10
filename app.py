@@ -1,4 +1,4 @@
-from product_cost_calculator import app
+from recipe_hub import app
 
 if __name__ == '__main__':
     app.run(debug=True)
