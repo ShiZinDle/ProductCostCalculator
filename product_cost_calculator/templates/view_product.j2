@@ -5,18 +5,19 @@
       <div class="card btn-outline-primary w-100">
         <div class="card-header bg-dark text-white">
             <span class="h2 font-weight-bold">
-              {{product['username'] }}'s
+              {{ product['username'] }}'s
             </span><br><span class="h3 font-weight-bold">
-              {{product['name'] | title}}
-            </span><span class='h3'>
-              {{ product['amount'] }}{{ product['unit'] }}
+              {{ product['name'] | title}}
             </span>
         </div>
         <div class="card-body text-body">
-          <span class="h3">Cost: {{ product['cost'] }}</span>
+          <span class="h3">
+            {{ product['amount'] }}{{ product['unit'] }}
+          </span>
+          </span>
         </div>
+      </div>
     </a>
-    </div>
     {% if current_user.user_id == product['user_id'] %}
     <a href="{{ url_for('delete_product', product_id=product['product_id']) }}">
       <button class="btn btn-outline-danger w-100">Delete Product</button>
@@ -27,16 +28,27 @@
     <table class="table table-borderless">
         <thead class="thead-dark">
           <tr>
-            <th scope="col">{{ form.ingredient.label(class='font-weight-bold')}}</li>
-            <th scope="col">{{ form.amount.label(class='font-weight-bold')}}</li>
-            <th scope="col">{{ form.unit.label(class='font-weight-bold')}}</li>
+            <th scope="col" class='font-weight-bold align-middle'>Ingredient</th>
+            <th scope="col" class='font-weight-bold align-middle'>Amount</th>
+            <th scope="col" class='font-weight-bold align-middle'>Unit</th>
+            {% if current_user.user_id == product['user_id'] %}
+              <td>
+                <a href="{{ url_for('share', product_id=product['product_id']) }}">
+                  {% if product['public'] %}
+                    <button class="btn btn-sm btn-danger">Remove from homepage</button>
+                  {% else %}
+                    <button class="btn btn-lg btn-primary">Share to homepage</button>
+                  {% endif %}
+                </a>
+              </td>
+            {% endif %}
           </tr>
         </thead>
       {% for recipe in recipes %}
         <tr>
-          <td>{{ recipe['ingredient'] | title }}</li>
-          <td>{{ recipe['amount'] }}</li>
-          <td>{{ recipe['unit'] }}</li>
+          <td>{{ recipe['ingredient'] | title }}</td>
+          <td>{{ recipe['amount'] }}</td>
+          <td>{{ recipe['unit'] }}</td>
           {% if current_user.user_id == product['user_id'] %}
             <td>
               <a href="{{ url_for('delete_recipe', ingredient_id=recipe['ingredient_id'], product_id=product['product_id']) }}">
@@ -87,7 +99,7 @@
               {% endif %}
             </td>
             <td>
-              {{ form.submit(class='btn btn-outline-primary')}}
+              {{ form.submit(class='btn btn-outline-primary') }}
             </td>
           </form>
         {% endif %}

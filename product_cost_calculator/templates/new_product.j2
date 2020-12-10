@@ -6,7 +6,7 @@
       {{ form.hidden_tag() }}
       <div class="input-group mb-2">
         <div class="input-group-prepend">
-          {{ form.name.label(class='font-weight-bold input-group-text')}}
+          {{ form.name.label(class='font-weight-bold input-group-text') }}
         </div>
         {% if form.name.errors %}
           {{ form.name(class='form-control is-invalid') }}
@@ -21,7 +21,7 @@
       </div>
       <div class="input-group mb-2">
         <div class="input-group-prepend">
-          {{ form.amount.label(class='font-weight-bold input-group-text')}}
+          {{ form.amount.label(class='font-weight-bold input-group-text') }}
         </div>
         {% if form.amount.errors %}
           {{ form.amount(class='form-control is-invalid') }}
@@ -36,7 +36,7 @@
       </div>
       <div class="input-group mb-2">
         <div class="input-group-prepend">
-          {{ form.unit.label(class='font-weight-bold input-group-text')}}
+          {{ form.unit.label(class='font-weight-bold input-group-text') }}
         </div>
         {% if form.unit.errors %}
           {{ form.unit(class='form-control is-invalid') }}
@@ -53,7 +53,7 @@
       {{ form.public.label }}
       <small class="text-muted">Public products will be displayed in the home page.</small>
       <div class="mb-2">
-        {{ form.submit(class='btn btn-outline-primary')}}
+        {{ form.submit(class='btn btn-outline-primary') }}
       </div>
     </form>
   </div>

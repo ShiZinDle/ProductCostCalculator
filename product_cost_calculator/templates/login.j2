@@ -6,7 +6,7 @@
       {{ form.hidden_tag() }}
       <div class="input-group mb-2">
         <div class="input-group-prepend">
-          {{ form.email.label(class='font-weight-bold input-group-text')}}
+          {{ form.email.label(class='font-weight-bold input-group-text') }}
         </div>
         {% if form.email.errors %}
           {{ form.email(class='form-control is-invalid') }}
@@ -21,7 +21,7 @@
       </div>
       <div class="input-group mb-2">
         <div class="input-group-prepend">
-          {{ form.password.label(class='font-weight-bold input-group-text')}}
+          {{ form.password.label(class='font-weight-bold input-group-text') }}
         </div>
         {% if form.password.errors %}
           {{ form.password(class='form-control is-invalid') }}
@@ -37,7 +37,7 @@
       {{ form.remember }}
       {{ form.remember.label }}
       <div class="mb-2">
-        {{ form.submit(class='btn btn-outline-primary')}}
+        {{ form.submit(class='btn btn-outline-primary') }}
       </div>
     </form>
     <p class="text-muted">Don't have a user? <a href="{{ url_for('register') }}">Sign up</a>.</p>
