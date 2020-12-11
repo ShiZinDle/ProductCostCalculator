@@ -2,7 +2,7 @@ from flask_login import UserMixin
 from sqlalchemy import (Binary, Boolean, Column, DateTime, Float, ForeignKey,
                         Integer, String)
 
-from recipe_hub import Base, engine
+from recipe_hub import Base
 
 class User(Base, UserMixin):
     __tablename__ = 'users'
@@ -68,6 +68,3 @@ class Recipe(Base):
     product_id = Column(Integer, ForeignKey('products.product_id'), primary_key=True)
     ingredient_id = Column(Integer, ForeignKey('ingredients.ingredient_id'), primary_key=True)
     amount = Column(Integer, nullable=False)
-
-
-Base.metadata.create_all(engine)
