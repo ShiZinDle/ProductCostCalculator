@@ -12,7 +12,6 @@ login_manager = LoginManager(app)
 
 engine = create_engine(os.environ['DATABASE_URL'], echo=True)
 Base = declarative_base()
-Session = sessionmaker(bind=engine)
-session = Session()
+session = sessionmaker(bind=engine)
 
 import recipe_hub.views
