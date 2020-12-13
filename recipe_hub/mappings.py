@@ -2,6 +2,7 @@ from flask_login import UserMixin
 
 from recipe_hub import db
 
+
 class User(db.Model, UserMixin):
     __tablename__ = 'users'
     
@@ -14,6 +15,7 @@ class User(db.Model, UserMixin):
     
     def get_id(self) -> int:
         return self.user_id
+
 
 class Unit(db.Model):
     __tablename__ = 'units'

@@ -22,8 +22,8 @@ def add_ingredient(name: str, unit_id: int) -> int:
 
 
 def get_ingredient_id(name: str, unit_id: int) -> Optional[int]:
-    ingredient = Ingredient.query.filter(and_(Ingredient.name==name.lower(),
-                                           Ingredient.unit_id==unit_id)).first()
+    ingredient = Ingredient.query.filter(and_(Ingredient.name == name.lower(),
+                                           Ingredient.unit_id == unit_id)).first()
     try:
         return ingredient.ingredient_id
     except AttributeError:
@@ -39,11 +39,10 @@ def get_ingredient_unit(ingredient_id: int) -> str:
     return get_unit_name(ingredient.unit_id)
 
 
-
 # Product
 def get_product_id(name: str) -> int:
-    product = Product.query.filter(and_(Product.product_id==current_user.user_id,
-                                           Product.name==name.lower())).first()
+    product = Product.query.filter(and_(Product.product_id == current_user.user_id,
+                                           Product.name == name.lower())).first()
     return product.product_id
 
 
@@ -53,7 +52,6 @@ def get_product(product_id: int) -> Dict[str, Union[bool, int, str]]:
             'name': product.name,
             'amount': product.amount,
             'unit': get_unit_name(product.unit_id),
-            'cost': get_product_cost(product_id),
             'user_id': product.user_id,
             'username': get_user(product.user_id).username,
             'public': product.public == 1}
@@ -68,30 +66,26 @@ def add_product(name: str, amount: int, unit: int, public: bool) -> int:
 
 
 def delete_product(product_id: int) -> None:
-    product = Product.query.filter(Product.product_id==product_id).first()
+    product = Product.query.filter(Product.product_id == product_id).first()
     db.session.delete(product)
     db.session.commit()
 
 
 def get_all_products(user_id: int, public_only: bool = False) -> List[Dict[str, Union[int, str]]]:
     if public_only:
-        products = db.session.query(Product.product_id).filter(and_(Product.user_id==user_id,
-                                                        Product.public==public_only)).all()
+        products = db.session.query(Product.product_id).filter(and_(Product.user_id == user_id,
+                                                        Product.public == public_only)).all()
     else:
-        products = db.session.query(Product.product_id).filter(Product.user_id==user_id).all()
+        products = db.session.query(Product.product_id).filter(Product.user_id == user_id).all()
     all_products = tuple(get_product(product_id) for product_id in tuple(product.product_id for product in products))
     return sorted(all_products, key=lambda product: product['name'])
 
 
 def get_all_public_products() -> List[Dict[str, Union[int, str]]]:
-    products = db.session.query(Product.product_id).filter(Product.public==True).all()
+    products = db.session.query(Product.product_id).filter(Product.public == True).all()
     all_products = [get_product(product_id) for product_id in tuple(product.product_id for product in products)]
     shuffle(all_products)
     return all_products
-
-
-def get_product_cost(product_id: int) -> int:
-    pass
 
 
 def share_product(product_id: int) -> None:
@@ -109,7 +103,7 @@ def add_recipe(product_id: int, ingredient: str, amount: int, unit_id: int) -> N
 
 
 def get_recipe(product_id: int) -> List[Dict[str, Union[int, str]]]:
-    entries = Recipe.query.filter(Recipe.product_id==product_id).all()
+    entries = Recipe.query.filter(Recipe.product_id == product_id).all()
     return [{'ingredient_id': entry.ingredient_id,
              'ingredient': get_ingredient_name(entry.ingredient_id),
              'amount': entry.amount,
@@ -118,8 +112,8 @@ def get_recipe(product_id: int) -> List[Dict[str, Union[int, str]]]:
 
 
 def delete_recipe(product_id: int, ingredient_id: int) -> None:
-    recipe = Recipe.query.filter(and_(Recipe.product_id==product_id,
-                                         Recipe.ingredient_id==ingredient_id)).first()
+    recipe = Recipe.query.filter(and_(Recipe.product_id == product_id,
+                                         Recipe.ingredient_id == ingredient_id)).first()
     db.session.delete(recipe)
     db.session.commit()
 
@@ -133,8 +127,8 @@ def get_unit_name(unit_id: int) -> str:
 
 
 def get_unit_id(name_or_symbol: str) -> int:
-    unit = Unit.query.filter(or_(Unit.name==name_or_symbol.lower(),
-                                    Unit.symbol==name_or_symbol.lower())).first()
+    unit = Unit.query.filter(or_(Unit.name == name_or_symbol.lower(),
+                                    Unit.symbol == name_or_symbol.lower())).first()
     return unit.unit_id
 
 
@@ -174,7 +168,7 @@ def get_user(user_id: int) -> User:
 
 
 def get_user_by_email(email: str) -> User:
-    user = User.query.filter(User.email==email.lower()).first()
+    user = User.query.filter(User.email == email.lower()).first()
     return user
 
 
@@ -189,31 +183,31 @@ def load_user(user_id: int) -> User:
 
 
 def change_username(user_id: int, username: str) -> None:
-    user = User.query.filter(User.user_id==user_id).first()
+    user = User.query.filter(User.user_id == user_id).first()
     user.username = username
     db.session.commit()
 
 
 def change_email(user_id: int, email: str) -> None:
-    user = User.query.filter(User.user_id==user_id).first()
+    user = User.query.filter(User.user_id == user_id).first()
     user.email = email.lower()
     db.session.commit()
 
 
 def change_password(user_id: int, password: str) -> None:
     hashed_password = bcrypt.hashpw(password.encode(), bcrypt.gensalt())
-    user = User.query.filter(User.user_id==user_id).first()
+    user = User.query.filter(User.user_id == user_id).first()
     user.password_hash = hashed_password
     db.session.commit()
 
 
 def change_fullname(user_id: int, fullname: str) -> None:
-    user = User.query.filter(User.user_id==user_id).first()
+    user = User.query.filter(User.user_id == user_id).first()
     user.full_name = fullname.lower()
     db.session.commit()
 
 
 def change_birthday(user_id: int, birthday: str) -> None:
-    user = User.query.filter(User.user_id==user_id).first()
+    user = User.query.filter(User.user_id == user_id).first()
     user.date_of_birth = birthday
     db.session.commit()

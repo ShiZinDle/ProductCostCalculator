@@ -6,7 +6,6 @@ from wtforms.fields.html5 import DateField, IntegerField
 from wtforms.fields.simple import HiddenField
 from wtforms.validators import DataRequired, Email, EqualTo, Length, Optional, ValidationError
 
-from recipe_hub import db
 from recipe_hub.db_funcs import get_all_units, get_unit_id, validate_password
 from recipe_hub.mappings import Ingredient, Product, Recipe, User
 
@@ -26,7 +25,7 @@ class RegisterForm(FlaskForm):
             raise ValidationError('Chosen username is unavailable. Please choose a diffrent one')
 
     def validate_email(self, email: str) -> None:
-        user = User.query.filter(User.email==email.data.lower()).first()
+        user = User.query.filter(User.email == email.data.lower()).first()
         if user:
             raise ValidationError('An account already exists for the chosen email. Please chooses a different email or login.')
 
@@ -38,7 +37,7 @@ class LoginForm(FlaskForm):
     submit = SubmitField('Sign In')
 
     def validate_email(self, email: str) -> None:
-        user = User.query.filter(User.email==email.data.lower()).first()
+        user = User.query.filter(User.email == email.data.lower()).first()
         if not user:
             raise ValidationError('No account exists for the provided email.')
 
@@ -51,8 +50,8 @@ class ProductForm(FlaskForm):
     submit = SubmitField('Add')
     
     def validate_name(self, name: str) -> None:
-        product = Product.query.filter(and_(Product.user_id==current_user.user_id,
-                                               Product.name==name.data.lower())).first()
+        product = Product.query.filter(and_(Product.user_id == current_user.user_id,
+                                               Product.name == name.data.lower())).first()
         if product:
             raise ValidationError('A product with the chosen name already exists on your profile. Please choose a different name.')
 
@@ -65,11 +64,11 @@ class RecipeForm(FlaskForm):
     submit = SubmitField('+')
     
     def validate_ingredient(self, ingredient: str) -> None:
-        ingredient_object = Ingredient.query.filter(and_(Ingredient.name==ingredient.data.lower(),
-                                                     Ingredient.unit_id==self.unit.data)).first()
+        ingredient_object = Ingredient.query.filter(and_(Ingredient.name == ingredient.data.lower(),
+                                                     Ingredient.unit_id == self.unit.data)).first()
         if ingredient_object is not None:
-            recipe = Recipe.query.filter(and_(Recipe.product_id==self.product_id.data,
-                                                Recipe.ingredient_id==ingredient_object.ingredient_id)).first()
+            recipe = Recipe.query.filter(and_(Recipe.product_id == self.product_id.data,
+                                                Recipe.ingredient_id == ingredient_object.ingredient_id)).first()
             if recipe:
                 raise ValidationError('The given ingredient is already found in the recipe.')
 
@@ -83,7 +82,7 @@ class UsernameForm(FlaskForm):
         if username.data == current_user.username:
             raise ValidationError('Please choose a new username.')
         user = User.query.filter(and_(User.username.ilike(username.data),
-                                         User.username!=current_user.username)).first()
+                                         User.username != current_user.username)).first()
         if user:
             raise ValidationError('Chosen username is unavailable. Please choose a diffrent one')
 
@@ -96,7 +95,7 @@ class EmailForm(FlaskForm):
     def validate_email(self, email: str) -> None:
         if email.data.lower() == current_user.email:
             raise ValidationError('Please choose a new email.')
-        user = User.query.filter(User.email==email.data.lower()).first()
+        user = User.query.filter(User.email == email.data.lower()).first()
         if user:
             raise ValidationError('An account already exists for the chosen email.')
 

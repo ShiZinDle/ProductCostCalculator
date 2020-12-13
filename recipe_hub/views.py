@@ -5,8 +5,7 @@ from flask_login import current_user, login_user, logout_user
 from flask_login.utils import login_required
 from werkzeug.wrappers import Response
 
-import recipe_hub.db_funcs as db_funcs
-from recipe_hub import app
+from recipe_hub import app, db_funcs
 from recipe_hub.forms import (BirthdayForm, EmailForm, LoginForm, NameForm,
                               PasswordForm, ProductForm, RecipeForm,
                               RegisterForm, UsernameForm)
@@ -158,7 +157,7 @@ def edit_password() -> Union[Response, str]:
     if form.validate_on_submit():
         if db_funcs.validate_password(current_user.email, form.cur_password.data):
             db_funcs.change_password(current_user.user_id, form.new_password.data)
-            flash(f'Password changed.', 'success')
+            flash('Password changed.', 'success')
             return redirect(url_for('profile', user_id=current_user.user_id))
         flash('Wrong password. Please try again.', 'danger')
     return render_template('edit_password.j2', form=form)
