@@ -1,15 +1,7 @@
 {% extends 'base.j2' %}
 {% block content %}
-  <div class="float-right col-2 card mr-2 mt-2 px-3 pt-2 bg-light">
-    <p class="d-flex"><span class="font-weight-bold">Username: </span><span class="ml-auto">{{ user.username }}</span></p>
-    <p class="d-flex"><span class="font-weight-bold">Email: </span><span class="ml-auto">{{ user.email }}</span></p>
-    <p class="d-flex"><span class="font-weight-bold">Full Name: </span><span class="ml-auto">{{ user.full_name | title }}</span></p>
-    {% if user.date_of_birth %}
-      <p class="d-flex"><span class="font-weight-bold">Date of Birth: </span><span class="ml-auto">{{ user.date_of_birth.date().strftime('%b %d, %Y') }}</span></p>
-    {% endif %}
-  </div>
   {% if user.user_id == current_user.user_id %}
-    <div class="container col-3 mt-5 text-center">
+    <div class="container col col-sm-8 col-md-6 col-lg-5 col-xl-4 mt-5 text-center">
       <a href="{{ url_for('edit_username') }}">
         <button class="btn btn-lg btn-outline-primary w-100 mb-2">Change Username</button>
       </a>
@@ -30,19 +22,26 @@
     <div class="container col-8 mt-3 text-center">
       <div class="row">
         {% for product in products %}
-          <div class="col-2 p-1 text-center">
+          <div class="col col-sm-6 col-md-5 col-lg-4 col-xl-3 p-1 text-center">
             <a href="{{ url_for('view_product', product_id=product['product_id']) }}" class="text-decoration-none">
               <div class="card btn-outline-primary">
                 <p class="card-header font-weight-bold h5 bg-dark text-white">{{ product['name'] | title }}</p>
                 <div class="card-body text-body">
                   <p>{{ product['amount'] }}{{ product['unit'] }}</p>
-                  <p>{{ product['cost'] }}</p>
                 </div>
               </div>
             </a>
           </div>
         {% endfor %}
       </div>
-    {% endif %}
     </div>
+  {% endif %}
+  <div class="container col col-sm-8 col-md-6 col-lg-5 col-xl-4 mt-2 px-3 pt-2 bg-light">
+    <p class="d-flex"><span class="font-weight-bold">Username: </span><span class="ml-auto">{{ user.username }}</span></p>
+    <p class="d-flex"><span class="font-weight-bold">Email: </span><span class="ml-auto">{{ user.email }}</span></p>
+    <p class="d-flex"><span class="font-weight-bold">Full Name: </span><span class="ml-auto">{{ user.full_name | title }}</span></p>
+    {% if user.date_of_birth %}
+      <p class="d-flex"><span class="font-weight-bold">Date of Birth: </span><span class="ml-auto">{{ user.date_of_birth.date().strftime('%b %d, %Y') }}</span></p>
+    {% endif %}
+  </div>
 {% endblock %}

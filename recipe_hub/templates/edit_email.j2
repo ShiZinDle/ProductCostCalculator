@@ -1,42 +1,40 @@
-{% extends 'base.j2' %}
-{% block content %}
-  <div class="container col-4 mt-3 text-center">
-    <legend class="h2">Edit Email</legend>
-    <form method="POST" action="">
-      {{ form.hidden_tag() }}
-      <div class="input-group input-group mb-2">
-        <div class="input-group-prepend">
-          {{ form.email.label(class='font-weight-bold input-group-text')}}
+{% extends 'edit.j2' %}
+{% block edit %}
+  <legend class="h2">Edit Email</legend>
+  <form method="POST" action="">
+    {{ form.hidden_tag() }}
+    <div class="input-group input-group mb-2">
+      <div class="input-group-prepend">
+        {{ form.email.label(class='font-weight-bold input-group-text')}}
+      </div>
+      {% if form.email.errors %}
+        {{ form.email(class='form-control is-invalid') }}
+        <div class="invalid-feedback">
+          {% for error in form.email.errors %}
+            {{ error }}
+          {% endfor %}
         </div>
-        {% if form.email.errors %}
-          {{ form.email(class='form-control is-invalid') }}
-          <div class="invalid-feedback">
-            {% for error in form.email.errors %}
-              {{ error }}
-            {% endfor %}
-          </div>
-        {% else %}
-          {{ form.email(class='form-control') }}
-        {% endif %}
+      {% else %}
+        {{ form.email(class='form-control') }}
+      {% endif %}
+    </div>
+    <div class="input-group input-group mb-2">
+      <div class="input-group-prepend">
+        {{ form.password.label(class='font-weight-bold input-group-text')}}
       </div>
-      <div class="input-group input-group mb-2">
-        <div class="input-group-prepend">
-          {{ form.password.label(class='font-weight-bold input-group-text')}}
+      {% if form.password.errors %}
+        {{ form.password(class='form-control is-invalid') }}
+        <div class="invalid-feedback">
+          {% for error in form.password.errors %}
+            {{ error }}
+          {% endfor %}
         </div>
-        {% if form.password.errors %}
-          {{ form.password(class='form-control is-invalid') }}
-          <div class="invalid-feedback">
-            {% for error in form.password.errors %}
-              {{ error }}
-            {% endfor %}
-          </div>
-        {% else %}
-          {{ form.password(class='form-control') }}
-        {% endif %}
-      </div>
-      <div class="mb-2">
-        {{ form.submit(class='btn btn-lg btn-outline-primary')}}
-      </div>
-    </form>
-  </div>
+      {% else %}
+        {{ form.password(class='form-control') }}
+      {% endif %}
+    </div>
+    <div class="mb-2">
+      {{ form.submit(class='btn btn-lg btn-outline-primary')}}
+    </div>
+  </form>
 {% endblock %}

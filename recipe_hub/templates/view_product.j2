@@ -1,6 +1,6 @@
 {% extends 'base.j2' %}
 {% block content %}
-  <div class="float-right text-center mr-2 mt-2">
+  <div class="container col-10 col-md-8 col-lg-6 text-center mt-2">
     <a href="{{ url_for('profile', user_id=product['user_id']) }}" class="text-decoration-none">
       <div class="card btn-outline-primary w-100">
         <div class="card-header bg-dark text-white">
@@ -23,9 +23,7 @@
       <button class="btn btn-outline-danger w-100">Delete Product</button>
     </a>
     {% endif %}
-  </div>
-  <div class="container col-6 mt-2 text-center">
-    <table class="table table-borderless">
+    <table class="table table-borderless mt-2">
         <thead class="thead-dark">
           <tr>
             <th scope="col" class='font-weight-bold align-middle'>Ingredient</th>
