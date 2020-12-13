@@ -1,4 +1,5 @@
 from typing import Union
+
 from flask import flash, redirect, render_template, url_for
 from flask_login import current_user, login_user, logout_user
 from flask_login.utils import login_required
@@ -6,11 +7,13 @@ from werkzeug.wrappers import Response
 
 import recipe_hub.db_funcs as db_funcs
 from recipe_hub import app
-from recipe_hub.forms import BirthdayForm, EmailForm, LoginForm, NameForm, PasswordForm, ProductForm, RecipeForm, RegisterForm, UsernameForm
+from recipe_hub.forms import (BirthdayForm, EmailForm, LoginForm, NameForm,
+                              PasswordForm, ProductForm, RecipeForm,
+                              RegisterForm, UsernameForm)
 
 
 @app.route('/')
-def home() -> Response:
+def home() -> str:
     products = db_funcs.get_all_public_products()
     return render_template('home.j2', products=products)
 

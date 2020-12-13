@@ -1,70 +1,68 @@
 from flask_login import UserMixin
-from sqlalchemy import (Binary, Boolean, Column, DateTime, Float, ForeignKey,
-                        Integer, String)
 
-from recipe_hub import Base
+from recipe_hub import db
 
-class User(Base, UserMixin):
+class User(db.Model, UserMixin):
     __tablename__ = 'users'
     
-    user_id = Column(Integer, primary_key=True)
-    username = Column(String, nullable=False, unique=True)
-    password_hash = Column(Binary, nullable=False)
-    full_name = Column(String, nullable=False)
-    email = Column(String, nullable=False, unique=True)
-    date_of_birth = Column(DateTime)
+    user_id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String, nullable=False, unique=True)
+    password_hash = db.Column(db.Binary, nullable=False)
+    full_name = db.Column(db.String, nullable=False)
+    email = db.Column(db.String, nullable=False, unique=True)
+    date_of_birth = db.Column(db.DateTime)
     
     def get_id(self) -> int:
         return self.user_id
 
-class Unit(Base):
+class Unit(db.Model):
     __tablename__ = 'units'
     
-    unit_id = Column(Integer, primary_key=True)
-    name = Column(String, nullable=False, unique=True)
-    symbol = Column(String, unique=True)
+    unit_id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String, nullable=False, unique=True)
+    symbol = db.Column(db.String, unique=True)
 
 
-class Product(Base):
+class Product(db.Model):
     __tablename__ = 'products'
     
-    product_id = Column(Integer, primary_key=True)
-    name = Column(String, nullable=False)
-    amount = Column(Integer, nullable=False)
-    unit_id = Column(Integer, ForeignKey('units.unit_id'), nullable=False)
-    user_id = Column(Integer, ForeignKey('users.user_id'), nullable=False)
-    public = Column(Boolean)
+    product_id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String, nullable=False)
+    amount = db.Column(db.Integer, nullable=False)
+    unit_id = db.Column(db.Integer, db.ForeignKey('units.unit_id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable=False)
+    public = db.Column(db.Boolean)
 
 
-class Ingredient(Base):
+class Ingredient(db.Model):
     __tablename__ = 'ingredients'
     
-    ingredient_id = Column(Integer, primary_key=True)
-    name = Column(String, nullable=False)
-    unit_id = Column(Integer, ForeignKey('units.unit_id'), nullable=False)
+    ingredient_id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String, nullable=False)
+    unit_id = db.Column(db.Integer, db.ForeignKey('units.unit_id'), nullable=False)
 
 
-class Supplier(Base):
+class Supplier(db.Model):
     __tablename__ = 'suppliers'
     
-    supplier_id = Column(Integer, primary_key=True)
-    name = Column(String, nullable=False, unique=True)
-    user_id = Column(Integer, ForeignKey('users.user_id'), unique=True)
+    supplier_id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String, nullable=False, unique=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), unique=True)
 
 
-class Supply(Base):
+class Supply(db.Model):
     __tablename__ = 'supplies'
     
-    supply_id = Column(Integer, primary_key=True)
-    ingredient_id = Column(Integer, ForeignKey('ingredients.ingredient_id'), nullable=False)
-    amount = Column(Integer, nullable=False)
-    price = Column(Float, nullable=False)
-    supplier_id = Column(Integer, ForeignKey('suppliers.supplier_id'), nullable=False)
+    supply_id = db.Column(db.Integer, primary_key=True)
+    ingredient_id = db.Column(db.Integer, db.ForeignKey('ingredients.ingredient_id'), nullable=False)
+    amount = db.Column(db.Integer, nullable=False)
+    price = db.Column(db.Float, nullable=False)
+    supplier_id = db.Column(db.Integer, db.ForeignKey('suppliers.supplier_id'), nullable=False)
 
 
-class Recipe(Base):
+class Recipe(db.Model):
     __tablename__ = 'recipes'
     
-    product_id = Column(Integer, ForeignKey('products.product_id'), primary_key=True)
-    ingredient_id = Column(Integer, ForeignKey('ingredients.ingredient_id'), primary_key=True)
-    amount = Column(Integer, nullable=False)
+    product_id = db.Column(db.Integer, db.ForeignKey('products.product_id'), primary_key=True)
+    ingredient_id = db.Column(db.Integer, db.ForeignKey('ingredients.ingredient_id'), primary_key=True)
+    amount = db.Column(db.Integer, nullable=False)
