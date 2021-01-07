@@ -1,7 +1,8 @@
 from datetime import date
-from recipe_hub.mappings import User
+
 import pytest
 
+from recipe_hub.mappings import User
 from tests import conftest
 
 NEW_USERNAME = 'admin1'

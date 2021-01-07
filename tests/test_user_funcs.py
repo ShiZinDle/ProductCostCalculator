@@ -7,10 +7,10 @@ from recipe_hub.mappings import User
 from tests import conftest
 
 CHANGES = [
-    (User.username ,'admin1', db_funcs.change_username),
-    (User.email ,'admin1@admin1.com', db_funcs.change_email),
-    (User.full_name ,'admin1 admin1', db_funcs.change_fullname),
-    (User.date_of_birth ,datetime.date(1970, 1, 2).strftime('%Y-%m-%d'), db_funcs.change_birthday)
+    (User.username, 'admin1', db_funcs.change_username),
+    (User.email, 'admin1@admin1.com', db_funcs.change_email),
+    (User.full_name, 'admin1 admin1', db_funcs.change_fullname),
+    (User.date_of_birth, datetime.date(1970, 1, 2).strftime('%Y-%m-%d'), db_funcs.change_birthday)
 ]
 
 
@@ -20,7 +20,7 @@ def test_add_user():
     assert User.query.filter(
         User.username == user_details['username'].lower()).first() is None
     user_id = db_funcs.add_user(**user_details)
-    user =  User.query.get(user_id)
+    user = User.query.get(user_id)
     assert user is not None
     conftest.delete(user)
 

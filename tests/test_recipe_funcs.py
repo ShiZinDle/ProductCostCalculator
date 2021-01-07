@@ -41,23 +41,3 @@ def test_delete_recipe(product, ingredient):
         Recipe.product_id == product.product_id,
         Recipe.ingredient_id == ingredient.ingredient_id)).first()
     assert recipe is None
-
-
-
-
-
-# def test_get_recipe(recipe):
-#     recipe, product_id, _ = recipe
-#     assert len(db_funcs.get_recipe(product_id)) == 1
-
-
-# def test_delete_recipe(recipe):
-#     recipe, product_id, ingredient_id = recipe
-#     assert Recipe.query.filter(and_(
-#         Recipe.product_id == product_id,
-#         Recipe.ingredient_id == ingredient_id)).first() is not None
-#     db_funcs.delete_recipe(product_id, ingredient_id)
-#     recipe = Recipe.query.filter(and_(
-#         Recipe.product_id == product_id,
-#         Recipe.ingredient_id == ingredient_id)).first()
-#     assert recipe is None

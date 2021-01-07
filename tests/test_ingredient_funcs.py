@@ -12,10 +12,10 @@ def test_add_ingredient():
         Ingredient.name == ingredient_name.lower(),
         Ingredient.unit_id == unit_id)).first() is None
     ingredient_id = db_funcs.add_ingredient(ingredient_name, unit_id)
-    ingredient =  Ingredient.query.get(ingredient_id)
+    ingredient = Ingredient.query.get(ingredient_id)
     assert ingredient is not None
     ingredient_id = db_funcs.add_ingredient(ingredient_name, unit_id)
-    ingredient =  Ingredient.query.get(ingredient_id)
+    ingredient = Ingredient.query.get(ingredient_id)
     assert ingredient is not None
     conftest.delete(ingredient)
 

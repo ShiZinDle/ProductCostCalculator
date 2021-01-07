@@ -26,7 +26,7 @@ def test_add_product(user):
         Product.name == product_details['name'].lower(),
         Product.user_id == user.user_id)).first() is None
     product_id = db_funcs.add_product(**product_details, user_id=user.user_id)
-    product =  Product.query.get(product_id)
+    product = Product.query.get(product_id)
     assert product is not None
     conftest.delete(product)
 

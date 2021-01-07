@@ -1,13 +1,12 @@
+import datetime
 import os
 import tempfile
 
 import bcrypt
-import datetime
 import pytest
 
 from recipe_hub import app, db
 from recipe_hub.mappings import Ingredient, Product, Unit, User
-
 
 HTTP_CODES = {
     'ok': 200,
@@ -85,7 +84,7 @@ def logout(client):
 def get_unit_name(unit_id):
     unit = Unit.query.get(unit_id)
     if unit.symbol:
-        return  unit.symbol
+        return unit.symbol
     return unit.name
 
 
