@@ -37,9 +37,10 @@ class LoginForm(FlaskForm):
     submit = SubmitField('Sign In')
 
     def validate_email(self, email: str) -> None:
-        user = User.query.filter(User.email == email.data.lower()).first()
-        if not user:
-            raise ValidationError('No account exists for the provided email.')
+        if not self.email.errors:
+            user = User.query.filter(User.email == email.data.lower()).first()
+            if not user:
+                raise ValidationError('No account exists for the provided email.')
 
 
 class ProductForm(FlaskForm):
@@ -74,8 +75,8 @@ class RecipeForm(FlaskForm):
 
 
 class UsernameForm(FlaskForm):
-    username = StringField('New username', validators=[DataRequired(), Length(min=2, max=20)])
-    password = PasswordField('Current password', validators=[DataRequired(), Length(min=8)])
+    username = StringField('New Username', validators=[DataRequired(), Length(min=2, max=20)])
+    password = PasswordField('Password', validators=[DataRequired(), Length(min=8)])
     submit = SubmitField('Change Username')
     
     def validate_username(self, username: str) -> None:
@@ -88,8 +89,8 @@ class UsernameForm(FlaskForm):
 
 
 class EmailForm(FlaskForm):
-    email = StringField('New email', validators=[DataRequired(), Email()])
-    password = PasswordField('Current password', validators=[DataRequired(), Length(min=8)])
+    email = StringField('New Email', validators=[DataRequired(), Email()])
+    password = PasswordField('Password', validators=[DataRequired(), Length(min=8)])
     submit = SubmitField('Change Email')
     
     def validate_email(self, email: str) -> None:
@@ -101,9 +102,9 @@ class EmailForm(FlaskForm):
 
 
 class PasswordForm(FlaskForm):
-    cur_password = PasswordField('Current password', validators=[DataRequired(), Length(min=8)])
-    new_password = PasswordField('New password', validators=[DataRequired(), Length(min=8)])
-    confirm_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('new_password')])
+    cur_password = PasswordField('Current Password', validators=[DataRequired(), Length(min=8)])
+    new_password = PasswordField('New Password', validators=[DataRequired(), Length(min=8)])
+    confirm_password = PasswordField('Confirm Password', validators=[DataRequired(message='Field must be equal to new password.'), EqualTo('new_password')])
     submit = SubmitField('Change Password')
     
     def validate_new_password(self, new_password: str) -> None:

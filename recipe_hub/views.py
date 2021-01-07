@@ -11,6 +11,10 @@ from recipe_hub.forms import (BirthdayForm, EmailForm, LoginForm, NameForm,
                               RegisterForm, UsernameForm)
 
 
+def flash_wrong_password():
+    flash('Wrong password. Please try again.', 'danger')
+
+
 @app.route('/')
 def home() -> str:
     products = db_funcs.get_all_public_products()
@@ -60,22 +64,21 @@ def products() -> str:
     return render_template('products.j2', username=username, products=products)
 
 
-@app.route('/products/<int:product_id>/share/')
+@app.route('/product/<int:product_id>/share/')
 @login_required
 def share(product_id: int) -> Response:
     db_funcs.share_product(product_id)
     return redirect(url_for('view_product', product_id=product_id))
 
 
-# Recipe
-@app.route('/products/<int:product_id>/delete/<int:ingredient_id>/')
+@app.route('/product/<int:product_id>/delete/<int:ingredient_id>/')
 @login_required
 def delete_recipe(product_id: int, ingredient_id: int) -> Response:
     db_funcs.delete_recipe(product_id, ingredient_id)
     return redirect(url_for('view_product', product_id=product_id))
 
 
-@app.route('/products/<int:product_id>/delete/all/')
+@app.route('/product/<int:product_id>/delete/all/')
 @login_required
 def delete_product(product_id: int) -> Response:
     db_funcs.delete_product(product_id)
@@ -115,12 +118,12 @@ def logout() -> Response:
     return redirect(url_for('home'))
 
 
-@app.route('/profile/<int:user_id>')
+@app.route('/profile/<int:user_id>/')
 def profile(user_id: int) -> Union[Response, str]:
     user = db_funcs.get_user(user_id)
-    products = db_funcs.get_all_products(user_id, public_only=True)
     if user is None:
         return redirect(url_for('home'))
+    products = db_funcs.get_all_products(user_id, public_only=True)
     return render_template('profile.j2', user=user, products=products)
 
 
@@ -133,7 +136,7 @@ def edit_username() -> Union[Response, str]:
             db_funcs.change_username(current_user.user_id, form.username.data)
             flash(f'Username changed to {form.username.data}.', 'success')
             return redirect(url_for('profile', user_id=current_user.user_id))
-        flash('Wrong password. Please try again.', 'danger')
+        flash_wrong_password()
     return render_template('edit_username.j2', form=form)
 
 
@@ -146,7 +149,7 @@ def edit_email() -> Union[Response, str]:
             db_funcs.change_email(current_user.user_id, form.email.data)
             flash(f'Email changed to {form.email.data}.', 'success')
             return redirect(url_for('profile', user_id=current_user.user_id))
-        flash('Wrong password. Please try again.', 'danger')
+        flash_wrong_password()
     return render_template('edit_email.j2', form=form)
 
 
@@ -159,7 +162,7 @@ def edit_password() -> Union[Response, str]:
             db_funcs.change_password(current_user.user_id, form.new_password.data)
             flash('Password changed.', 'success')
             return redirect(url_for('profile', user_id=current_user.user_id))
-        flash('Wrong password. Please try again.', 'danger')
+        flash_wrong_password()
     return render_template('edit_password.j2', form=form)
 
 
@@ -172,7 +175,7 @@ def edit_name() -> Union[Response, str]:
             db_funcs.change_fullname(current_user.user_id, form.fullname.data)
             flash(f'Name changed to {form.fullname.data}.', 'success')
             return redirect(url_for('profile', user_id=current_user.user_id))
-        flash('Wrong password. Please try again.', 'danger')
+        flash_wrong_password()
     return render_template('edit_name.j2', form=form)
 
 
@@ -186,5 +189,5 @@ def edit_birthday() -> Union[Response, str]:
             birthday = form.birthday.data.strftime('%d/%m/%Y')
             flash(f'Date of birth changed to {birthday}.', 'success')
             return redirect(url_for('profile', user_id=current_user.user_id))
-        flash('Wrong password. Please try again.', 'danger')
+        flash_wrong_password()
     return render_template('edit_birthday.j2', form=form)

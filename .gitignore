@@ -1,0 +1,17 @@
+*.db
+*.zip
+.vscode/
+OLD/
+TEST/
+__init__2.py
+__pycache__/
+.mypy_cache
+.pytest_cache
+copy.py
+debug_app.py
+heroku
+link.txt
+secret_key.txt
+tempCodeRunnerFile.py
+.coverage
+htmlcov

@@ -40,12 +40,6 @@ def get_ingredient_unit(ingredient_id: int) -> str:
 
 
 # Product
-def get_product_id(name: str) -> int:
-    product = Product.query.filter(and_(Product.product_id == current_user.user_id,
-                                           Product.name == name.lower())).first()
-    return product.product_id
-
-
 def get_product(product_id: int) -> Dict[str, Union[bool, int, str]]:
     product = Product.query.get(product_id)
     return {'product_id': product.product_id,
@@ -57,9 +51,12 @@ def get_product(product_id: int) -> Dict[str, Union[bool, int, str]]:
             'public': product.public == 1}
 
 
-def add_product(name: str, amount: int, unit: int, public: bool) -> int:
+def add_product(name: str, amount: int, unit: int, public: bool,
+                user_id: Optional[int] = None) -> int:
+    if user_id is None:
+        user_id = current_user.user_id
     product = Product(name=name.lower(), amount=amount, unit_id=unit,
-                      user_id=current_user.user_id, public=public)
+                      user_id=user_id, public=public)
     db.session.add(product)
     db.session.commit()
     return product.product_id
@@ -147,16 +144,17 @@ def reset_units(units) -> None:
     cur_units = Unit.query.all()
     if not cur_units:
         for unit in units:
-            db.session.add(Unit(*unit))
+            db.session.add(Unit(**unit))
         db.session.commit()
 
 
 # User
 def add_user(username: str, email: str, password: str,
-             fullname: str, birthday: Optional[date]) -> int:
+             fullname: str, birthday: Optional[date] = None) -> int:
     hashed_password = bcrypt.hashpw(password.encode(), bcrypt.gensalt())
     user = User(username=username, password_hash=hashed_password,
-                full_name=fullname.lower(), email=email.lower(), date_of_birth=birthday)
+                full_name=fullname.lower(), email=email.lower(),
+                date_of_birth=birthday)
     db.session.add(user)
     db.session.commit()
     return user.user_id
@@ -207,7 +205,7 @@ def change_fullname(user_id: int, fullname: str) -> None:
     db.session.commit()
 
 
-def change_birthday(user_id: int, birthday: str) -> None:
+def change_birthday(user_id: int, birthday: date) -> None:
     user = User.query.filter(User.user_id == user_id).first()
     user.date_of_birth = birthday
     db.session.commit()

@@ -44,24 +44,6 @@ class Ingredient(db.Model):
     unit_id = db.Column(db.Integer, db.ForeignKey('units.unit_id'), nullable=False)
 
 
-class Supplier(db.Model):
-    __tablename__ = 'suppliers'
-    
-    supplier_id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String, nullable=False, unique=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), unique=True)
-
-
-class Supply(db.Model):
-    __tablename__ = 'supplies'
-    
-    supply_id = db.Column(db.Integer, primary_key=True)
-    ingredient_id = db.Column(db.Integer, db.ForeignKey('ingredients.ingredient_id'), nullable=False)
-    amount = db.Column(db.Integer, nullable=False)
-    price = db.Column(db.Float, nullable=False)
-    supplier_id = db.Column(db.Integer, db.ForeignKey('suppliers.supplier_id'), nullable=False)
-
-
 class Recipe(db.Model):
     __tablename__ = 'recipes'
     
